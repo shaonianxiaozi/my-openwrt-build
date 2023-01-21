@@ -1,0 +1,17 @@
+name: Build OpenWrt
+
+on: [push,repository_dispatch,workflow_dispatch]
+
+jobs:
+  BUILD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Initialization environment
+        shell: bash
+        run: | 
+          sudo apt-get update
+          sudo apt-get install -y $(cat initialization.packages)
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          df -h
