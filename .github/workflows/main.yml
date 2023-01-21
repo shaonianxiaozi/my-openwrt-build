@@ -1,0 +1,12 @@
+name: Test
+on: workflow_dispatch
+jobs:
+  TEST:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo 
+        shell: bash
+        run: echo "Hello."
+      - name: Use sudo
+        shell: bash
+        run: sudo whoami
