@@ -22,14 +22,13 @@ jobs:
           mv config_file openwrt/.config
           echo "\n\n\nDo things about feeds"
           cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a && make download -j$(nproc)
-          echo "STATUS=OK" >> $GITHUB_ENV
       - name: Build
-        if: env.STATUS == 'OK'
         shell: bash
         run: |
           cd openwrt
+          make defconfig
           make -j$(nproc) || make -j1 || make -j1 V=s || echo "STATUS=BAD" >> $GITHUB_ENV
-          cd bin/targets/*/* && rm -rf packages && echo "FIRMWARE=$PWD" >> $GITHUB_ENV 
+          cd bin/targets/*/* && rm -rf packages && echo "FIRMWARE=$PWD" >> $GITHUB_ENV && echo "STATUS=OK" >> $GITHUB_ENV
       - name: Upload
         if: env.STATUS == 'OK'
         uses: softprops/action-gh-release@v1 
